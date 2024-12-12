@@ -1,4 +1,3 @@
-#Fitness Aplikacija
 Mihael Grdić, Antonio Ereiz
 
 🎯 Zadatak Zadatak je izrada web aplikacije ovisno o odabranoj temi. Zadatak se radi samostalno ili u grupama od dvoje studenata.

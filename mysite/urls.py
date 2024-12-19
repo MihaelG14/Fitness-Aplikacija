@@ -3,6 +3,12 @@ from django.urls import path, include
 from main import views
 from django.contrib.auth import views as auth_views
 
+from main.views import (
+    KorisnickiProfilListView, KorisnickiProfilDetailView,
+    FitnessCiljListView, FitnessCiljDetailView,
+    VjezbaListView, VjezbaDetailView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -15,4 +21,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('profili/', KorisnickiProfilListView.as_view(), name='profil-list'),
+    path('profil/<int:pk>/', KorisnickiProfilDetailView.as_view(), name='profil-detail'),
+    path('ciljevi/', FitnessCiljListView.as_view(), name='cilj-list'),
+    path('cilj/<int:pk>/', FitnessCiljDetailView.as_view(), name='cilj-detail'),
+    path('vjezbe/', VjezbaListView.as_view(), name='vjezba-list'),
+    path('vjezba/<int:pk>/', VjezbaDetailView.as_view(), name='vjezba-detail'),
 ]

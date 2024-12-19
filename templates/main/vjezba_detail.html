@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Detalji vježbe</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">{{ vjezba.naziv_vjezbe }}</h3>
+            <p class="card-text">
+                <strong>Korisnik:</strong> {{ vjezba.korisnik.korisnik.username }}<br>
+                <strong>Trajanje:</strong> {{ vjezba.trajanje }} min<br>
+                <strong>Potrošene kalorije:</strong> {{ vjezba.potrosene_kalorije }}<br>
+                <strong>Datum:</strong> {{ vjezba.datum }}<br>
+            </p>
+
+            <a href="{% url 'vjezba-list' %}" class="btn btn-primary">Natrag na listu</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

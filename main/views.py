@@ -6,6 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm
 
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import KorisnickiProfil, FitnessCilj, Vjezba
+from django.db.models import Q
+
 def home(request):
     return render(request, 'main/home.html')
 
@@ -91,3 +96,138 @@ def create_user(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'main/create_user.html', {'form': form})
+
+
+
+
+class KorisnickiProfilListView(LoginRequiredMixin, ListView):
+    model = KorisnickiProfil
+    template_name = 'main/korisnicki_profil_list.html'
+    context_object_name = 'profili'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search', '')
+        min_godine = self.request.GET.get('min_godine')
+        max_godine = self.request.GET.get('max_godine')
+        min_tezina = self.request.GET.get('min_tezina')
+        max_tezina = self.request.GET.get('max_tezina')
+        
+        if search_query:
+            queryset = queryset.filter(
+                Q(korisnik__username__icontains=search_query) |
+                Q(opis__icontains=search_query) |
+                Q(godine__icontains=search_query) |
+                Q(visina__icontains=search_query) |
+                Q(tezina__icontains=search_query)
+            )
+        
+        if min_godine:
+            queryset = queryset.filter(godine__gte=min_godine)
+        if max_godine:
+            queryset = queryset.filter(godine__lte=max_godine)
+        if min_tezina:
+            queryset = queryset.filter(tezina__gte=min_tezina)
+        if max_tezina:
+            queryset = queryset.filter(tezina__lte=max_tezina)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['min_godine'] = self.request.GET.get('min_godine', '')
+        context['max_godine'] = self.request.GET.get('max_godine', '')
+        context['min_tezina'] = self.request.GET.get('min_tezina', '')
+        context['max_tezina'] = self.request.GET.get('max_tezina', '')
+        return context
+    
+class FitnessCiljListView(LoginRequiredMixin, ListView):
+    model = FitnessCilj
+    template_name = 'main/fitness_cilj_list.html'
+    context_object_name = 'ciljevi'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search', '')
+        min_ciljna = self.request.GET.get('min_ciljna')
+        max_ciljna = self.request.GET.get('max_ciljna')
+        min_trenutna = self.request.GET.get('min_trenutna')
+        max_trenutna = self.request.GET.get('max_trenutna')
+        
+        if search_query:
+            queryset = queryset.filter(
+                Q(naziv_cilja__icontains=search_query) |
+                Q(korisnik__korisnik__username__icontains=search_query)
+            )
+        
+        if min_ciljna:
+            queryset = queryset.filter(ciljna_vrijednost__gte=min_ciljna)
+        if max_ciljna:
+            queryset = queryset.filter(ciljna_vrijednost__lte=max_ciljna)
+        if min_trenutna:
+            queryset = queryset.filter(trenutna_vrijednost__gte=min_trenutna)
+        if max_trenutna:
+            queryset = queryset.filter(trenutna_vrijednost__lte=max_trenutna)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['min_ciljna'] = self.request.GET.get('min_ciljna', '')
+        context['max_ciljna'] = self.request.GET.get('max_ciljna', '')
+        context['min_trenutna'] = self.request.GET.get('min_trenutna', '')
+        context['max_trenutna'] = self.request.GET.get('max_trenutna', '')
+        return context
+
+class VjezbaListView(LoginRequiredMixin, ListView):
+    model = Vjezba
+    template_name = 'main/vjezba_list.html'
+    context_object_name = 'vjezbe'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search', '')
+        min_trajanje = self.request.GET.get('min_trajanje')
+        max_trajanje = self.request.GET.get('max_trajanje')
+        min_kalorije = self.request.GET.get('min_kalorije')
+        max_kalorije = self.request.GET.get('max_kalorije')
+        
+        if search_query:
+            queryset = queryset.filter(
+                Q(naziv_vjezbe__icontains=search_query) |
+                Q(korisnik__korisnik__username__icontains=search_query)
+            )
+        
+        if min_trajanje:
+            queryset = queryset.filter(trajanje__gte=min_trajanje)
+        if max_trajanje:
+            queryset = queryset.filter(trajanje__lte=max_trajanje)
+        if min_kalorije:
+            queryset = queryset.filter(potrosene_kalorije__gte=min_kalorije)
+        if max_kalorije:
+            queryset = queryset.filter(potrosene_kalorije__lte=max_kalorije)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['min_trajanje'] = self.request.GET.get('min_trajanje', '')
+        context['max_trajanje'] = self.request.GET.get('max_trajanje', '')
+        context['min_kalorije'] = self.request.GET.get('min_kalorije', '')
+        context['max_kalorije'] = self.request.GET.get('max_kalorije', '')
+        return context
+    
+class KorisnickiProfilDetailView(LoginRequiredMixin, DetailView):
+    model = KorisnickiProfil
+    template_name = 'main/korisnicki_profil_detail.html'
+    context_object_name = 'profil'
+
+class FitnessCiljDetailView(LoginRequiredMixin, DetailView):
+    model = FitnessCilj
+    template_name = 'main/fitness_cilj_detail.html'
+    context_object_name = 'cilj'
+
+class VjezbaDetailView(LoginRequiredMixin, DetailView):
+    model = Vjezba
+    template_name = 'main/vjezba_detail.html'
+    context_object_name = 'vjezba'

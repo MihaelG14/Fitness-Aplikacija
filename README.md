@@ -1,13 +1,16 @@
 Fitness aplikacija
+
 Mihael Grdić, Antonio Ereiz
 
 🎯 Zadatak
 
 Zadatak je izrada web aplikacije ovisno o odabranoj temi. Zadatak se radi samostalno ili u grupama od dvoje studenata.
 
+
 Opis funkcionalnosti aplikacije:
 
   Fitness aplikacija je web aplikacija izrađena u Django frameworku s ciljem upravljanja fitness planovima, korisnicima i aktivnostima. Korisnici se mogu registrirati, prijaviti i koristiti aplikaciju za praćenje svog fitness napretka.
+
 
 Projektni zahtjevi:
 
@@ -30,6 +33,7 @@ Projektni zahtjevi:
   Testovi
 
   Login i registracija
+
 
 Ključne funkcionalnosti:
 

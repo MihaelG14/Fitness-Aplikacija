@@ -37,7 +37,7 @@ Projektni zahtjevi:
 
 Ključne funkcionalnosti:
 
-  Unos novih vrijednosti u bazu:
+  Unos novih vrijednosti u bazu.
 
   Dodavanje novih korisnika.
 
